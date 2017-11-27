@@ -170,6 +170,16 @@ extern NSString *const SRHTTPResponseErrorKey;
 - (instancetype)initWithURLRequest:(NSURLRequest *)request protocols:(nullable NSArray<NSString *> *)protocols securityPolicy:(SRSecurityPolicy *)securityPolicy NS_DESIGNATED_INITIALIZER;
 
 /**
+ Initializes a web socket with a given `NSURLRequest`, list of sub-protocols and whether untrusted SSL certificates are allowed.
+ 
+ @param request        Request to initialize with.
+ @param protocols      An array of strings that turn into `Sec-WebSocket-Protocol`. Default: `nil`.
+ @param securityPolicy Policy object describing transport security behavior.
+ @param StreamConfiuration Configurtion object describing Stream Socket behavior.
+ */
+- (instancetype)initWithURLRequest:(NSURLRequest *)request protocols:(NSArray<NSString *> *)protocols securityPolicy:(SRSecurityPolicy *)securityPolicy streamConfiguration: (SRStreamConfiguration*) streamConfiguration;
+
+/**
  Initializes a web socket with a given `NSURL`.
 
  @param url URL to initialize with.

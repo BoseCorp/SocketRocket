@@ -8,6 +8,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SRStreamConfiguration.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,7 +18,8 @@ typedef void(^SRProxyConnectCompletion)(NSError *_Nullable error,
 
 @interface SRProxyConnect : NSObject
 
-- (instancetype)initWithURL:(NSURL *)url;
+//- (instancetype)initWithURL:(NSURL *)url;
+- (instancetype)initWithURL:(NSURL *)url andStreamConfiguration: (SRStreamConfiguration *) streamConfiguration;
 
 - (void)openNetworkStreamWithCompletion:(SRProxyConnectCompletion)completion;
 

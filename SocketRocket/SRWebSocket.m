@@ -39,6 +39,8 @@
 #import "NSURLRequest+SRWebSocketPrivate.h"
 #import "NSRunLoop+SRWebSocketPrivate.h"
 #import "SRConstants.h"
+#import "SRStreamConfiguration.h"
+
 
 #if !__has_feature(objc_arc)
 #error SocketRocket must be compiled with ARC enabled
@@ -80,6 +82,7 @@ NSString *const SRHTTPResponseErrorKey = @"HTTPResponseStatusCode";
 @property (nonatomic, assign, readwrite) BOOL allowsUntrustedSSLCertificates;
 
 @property (nonatomic, strong, readonly) SRDelegateController *delegateController;
+@property (nonatomic, strong) SRStreamConfiguration *streamConfiguration;
 
 @end
 
@@ -110,6 +113,7 @@ NSString *const SRHTTPResponseErrorKey = @"HTTPResponseStatusCode";
     NSString *_secKey;
 
     SRSecurityPolicy *_securityPolicy;
+    
     BOOL _requestRequiresSSL;
     BOOL _streamSecurityValidated;
 
@@ -245,6 +249,16 @@ NSString *const SRHTTPResponseErrorKey = @"HTTPResponseStatusCode";
     return [self initWithURLRequest:request protocols:protocols allowsUntrustedSSLCertificates:allowsUntrustedSSLCertificates];
 }
 
+- (instancetype)initWithURLRequest:(NSURLRequest *)request protocols:(NSArray<NSString *> *)protocols securityPolicy:(SRSecurityPolicy *)securityPolicy streamConfiguration: (SRStreamConfiguration*) streamConfiguration
+{
+    self =  [self initWithURLRequest:request protocols:protocols securityPolicy:securityPolicy];
+    if (!self) return self;
+    
+    _streamConfiguration = streamConfiguration;
+    
+    return self;
+}
+
 - (void)assertOnWorkQueue;
 {
     assert(dispatch_get_specific((__bridge void *)self) == (__bridge void *)_workQueue);
@@ -327,7 +341,7 @@ NSString *const SRHTTPResponseErrorKey = @"HTTPResponseStatusCode";
         });
     }
 
-    _proxyConnect = [[SRProxyConnect alloc] initWithURL:_url];
+    _proxyConnect = [[SRProxyConnect alloc] initWithURL:_url andStreamConfiguration: _streamConfiguration];
 
     __weak typeof(self) wself = self;
     [_proxyConnect openNetworkStreamWithCompletion:^(NSError *error, NSInputStream *readStream, NSOutputStream *writeStream) {

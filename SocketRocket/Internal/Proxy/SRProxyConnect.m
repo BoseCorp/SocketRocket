@@ -14,12 +14,15 @@
 #import "SRError.h"
 #import "SRLog.h"
 #import "SRURLUtilities.h"
+#import "SRStreamConfiguration.h"
 
 @interface SRProxyConnect() <NSStreamDelegate>
 
 @property (nonatomic, strong) NSURL *url;
 @property (nonatomic, strong) NSInputStream *inputStream;
 @property (nonatomic, strong) NSOutputStream *outputStream;
+@property (nonatomic, strong) SRStreamConfiguration *streamConfiguration;
+
 
 @end
 
@@ -51,13 +54,23 @@
 {
     self = [super init];
     if (!self) return self;
-
+    
     _url = url;
     _connectionRequiresSSL = SRURLRequiresSSL(url);
-
+    
     _writeQueue = dispatch_queue_create("com.facebook.socketrocket.proxyconnect.write", DISPATCH_QUEUE_SERIAL);
     _inputQueue = [NSMutableArray arrayWithCapacity:2];
+    
+    return self;
+}
 
+- (instancetype)initWithURL:(NSURL *)url andStreamConfiguration: (SRStreamConfiguration *) streamConfiguration
+{
+    self = [self initWithURL:url];
+    if (!self) return self;
+    
+    _streamConfiguration = streamConfiguration;
+    
     return self;
 }
 
@@ -331,6 +344,12 @@
         [self.inputStream setProperty:settings forKey:NSStreamSOCKSProxyConfigurationKey];
         [self.outputStream setProperty:settings forKey:NSStreamSOCKSProxyConfigurationKey];
     }
+
+    // Apply Users Stream Configuration if supplied
+    if (self.streamConfiguration) {
+        [self.streamConfiguration applyStreamConfigurationToInputStream:_inputStream OutputStream:_outputStream];
+    }
+    
     self.inputStream.delegate = self;
     self.outputStream.delegate = self;
 }
