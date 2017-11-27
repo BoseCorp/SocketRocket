@@ -9,7 +9,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import <SocketRocket/SRSecurityPolicy.h>
+#import <SocketRocket/SRStreamConfiguration.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

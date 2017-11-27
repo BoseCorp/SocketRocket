@@ -10,7 +10,6 @@
 #import "SRError.h"
 
 #import "SRWebSocket.h"
-#import "SRStreamConfiguration.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

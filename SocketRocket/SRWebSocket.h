@@ -46,6 +46,7 @@ typedef NS_ENUM(NSInteger, SRStatusCode) {
 
 @class SRWebSocket;
 @class SRSecurityPolicy;
+@class SRStreamConfiguration;
 
 /**
  Error domain used for errors reported by SRWebSocket.

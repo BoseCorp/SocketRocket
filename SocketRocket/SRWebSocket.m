@@ -31,6 +31,7 @@
 #import "NSRunLoop+SRWebSocket.h"
 #import "SRProxyConnect.h"
 #import "SRSecurityPolicy.h"
+#import "SRStreamConfiguration.h"
 #import "SRHTTPConnectMessage.h"
 #import "SRRandom.h"
 #import "SRLog.h"
@@ -39,7 +40,6 @@
 #import "NSURLRequest+SRWebSocketPrivate.h"
 #import "NSRunLoop+SRWebSocketPrivate.h"
 #import "SRConstants.h"
-#import "SRStreamConfiguration.h"
 
 
 #if !__has_feature(objc_arc)
