@@ -1418,7 +1418,7 @@ static const size_t SRFrameHeaderOverhead = 32;
 - (void)stream:(NSStream *)aStream handleEvent:(NSStreamEvent)eventCode
 {
     __weak typeof(self) wself = self;
-
+    
     if (_requestRequiresSSL && !_streamSecurityValidated &&
         (eventCode == NSStreamEventHasBytesAvailable || eventCode == NSStreamEventHasSpaceAvailable)) {
         SecTrustRef trust = (__bridge SecTrustRef)[aStream propertyForKey:(__bridge id)kCFStreamPropertySSLPeerTrust];

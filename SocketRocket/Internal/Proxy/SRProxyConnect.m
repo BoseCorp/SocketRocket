@@ -345,6 +345,26 @@
         [self.outputStream setProperty:settings forKey:NSStreamSOCKSProxyConfigurationKey];
     }
 
+        NSDictionary *sslSettings = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     (id)kCFBooleanFalse, (id)kCFStreamSSLValidatesCertificateChain,
+                                    // @"riviera1234", (id)kCFStreamSSLPeerName,
+                                 nil];
+    
+    if (![self.inputStream setProperty:NSStreamSocketSecurityLevelNegotiatedSSL forKey:NSStreamSocketSecurityLevelKey]) {
+        SRDebugLog(@"Error Setting NSStreamSocketSecurityLevelKey (inputStream)");
+    }
+    if (![self.inputStream setProperty: sslSettings forKey: (__bridge NSString *)kCFStreamPropertySSLSettings]) {
+        SRDebugLog(@"Error Setting kCFStreamPropertySSLSettings (inputStream)");
+    }
+    
+    
+    if (![self.outputStream setProperty:NSStreamSocketSecurityLevelNegotiatedSSL forKey:NSStreamSocketSecurityLevelKey]) {
+        SRDebugLog(@"Error Setting NSStreamSocketSecurityLevelKey (outputStream)");
+    }
+    if (![self.outputStream setProperty: sslSettings forKey: (__bridge NSString *)kCFStreamPropertySSLSettings]) {
+        SRDebugLog(@"Error Setting kCFStreamPropertySSLSettings (outputStream)");
+    }
+    
     // Apply Users Stream Configuration if supplied
     if (self.streamConfiguration) {
         [self.streamConfiguration applyStreamConfigurationToInputStream:_inputStream OutputStream:_outputStream];
